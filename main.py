@@ -27,6 +27,13 @@ POEM = (
 
 
 def main() -> None:
+    # Self-check the sealed-scorer gate before writing anything: the poem
+    # must be 1..280 Unicode code points and not be entirely whitespace.
+    if not (1 <= len(POEM) <= 280 and any(not c.isspace() for c in POEM)):
+        raise SystemExit(
+            "poem failed the gate: must be 1-280 Unicode code points "
+            f"with at least one non-whitespace character (got {len(POEM)} code points)"
+        )
     out_dir = Path(os.environ.get("MAKEFUN_OUTPUT") or "/output")
     out_dir.mkdir(parents=True, exist_ok=True)
     # write_bytes: no newline translation, identical bytes on every run.
